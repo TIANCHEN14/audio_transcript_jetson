@@ -89,15 +89,27 @@ sudo apt-get install pulseaudio pavucontrol pulseaudio-utils
 ```
 pactl load-module module-null-sink sink_name=virtual_sink sink_properties=device.description=Virtual_Sink
 pactl load-module module-loopback source=virtual_sink.monitor
-
 ```
 3. Set default virtual sink
 ```
 pactl set-default-sink virtual_sink
 ```
+4. Edit Pulse Radio default config
+```
+sudo nano /etc/pulse/default.pa
+
+### Load the virtual sink module
+load-module module-null-sink sink_name=virtual_sink sink_properties=device.description=Virtual_Sink
+
+### Load the loopback module for the virtual sink
+load-module module-loopback source=virtual_sink.monitor
+
+### Set the default sink to the virtual sink
+set-default-sink virtual_sink
+```
 
 ## Git Clone 
 We will need to clone this repository on jetson local machine
-'''
+```
 git clone https://github.com/TIANCHEN14/audio_transcript_jetson.git
-'''
+```
