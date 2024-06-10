@@ -3,6 +3,9 @@ import numpy as np
 from transformers import WhisperProcessor, WhisperForConditionalGeneration
 #import torchaudio
 import torch
+from threading import Thread
+import queue
+import paho.mqtt.client as mqtt
 
 # transcribing audio that is 
 def transcribe_audio(audio_array, model, processor):
@@ -32,8 +35,8 @@ def audio_callback(indata, frames, time, status):
     if status:
         print(status)
     # Append the incoming audio data to the global list
-    global audio_data
-    audio_data.append(indata.copy())  
+    #global audio_data
+    audio_queue.put(indata.copy())  
 
 def record_audio(duration = 5 , model = None, processor = None):
     # define global variable for all audio samples
@@ -58,6 +61,19 @@ def record_audio(duration = 5 , model = None, processor = None):
 
     #return audio_array
 
+# prepare MQTT client servers
+broker_address = "10.14.105.52"
+port = 1883
+
+# define topic
+topic = "NASCAR_Radio"
+
+# MQTT clients creation
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+
+client.connect(broker_address , port)
+
+
 model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-small.en").to('cuda')
 processor = WhisperProcessor.from_pretrained("openai/whisper-small.en")
 
@@ -68,6 +84,9 @@ sd.default.device = "pulse"
 while True:
     print("Starting a new 10-second recording...")
     transcription = record_audio(5, model=model, processor=processor)
+    # mqtt pubulish
+    client.publish(topic , transcription)
+    # print result
     print("Recording completed. Transcription:", transcription)
     print("Waiting for the next recording...")
     sd.sleep(10)  # Delay before the next recording
