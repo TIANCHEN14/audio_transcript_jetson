@@ -5,7 +5,7 @@ from transformers import WhisperProcessor, WhisperForConditionalGeneration
 from threading import Thread
 import queue
 import torch
-import keyboard
+#import keyboard
 import paho.mqtt.client as mqtt
 
 # define audio queue
@@ -51,7 +51,7 @@ def record_audio(duration = 5 , channels = 1 , sampling_rate = 16000):
 
 def main():
 	# prepare MQTT client servers
-	broker_address = "192.168.1.223"
+	broker_address = "SHR1716.shracing.com"
 	port = 1883
 
 	# define topic

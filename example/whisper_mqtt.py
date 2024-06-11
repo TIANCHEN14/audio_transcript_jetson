@@ -60,7 +60,7 @@ def record_audio(duration = 5 , model = None, processor = None):
     #return audio_array
 
 # prepare MQTT client servers
-broker_address = "192.168.1.223"
+broker_address = "SHR1716.shracing.com"
 port = 1883
 
 # define topic
