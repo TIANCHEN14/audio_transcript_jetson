@@ -24,7 +24,7 @@ sudo jtop
 Sometime we might need to reboot the jetson in order to start the jtop services. After we open JTOP info page. If all cuda driver is missing we will need to install jetpack compontent
 ```
 sudo apt update
-sudo apt install jetpack
+sudo apt install nvidia-jetpack
 ```
 
 
@@ -56,7 +56,7 @@ export TORCH_INSTALL=https://developer.download.nvidia.cn/compute/redist/jp/v60/
 ```
 After set the export path run following command to install pytorch
 ```
-python3 -m pip install numpy
+python3 -m pip install --upgrade numpy
 python3 -m pip install --no-cache $TORCH_INSTALL
 ```
 After the install please check to make sure everything is properly installed before move on
@@ -96,6 +96,7 @@ pactl set-default-sink virtual_sink
 ```
 4. Edit Pulse Radio default config
 ```
+sudp apt install nano
 sudo nano /etc/pulse/default.pa
 
 ### Load the virtual sink module
